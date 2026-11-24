@@ -1,0 +1,8 @@
+{
+  "appId": "com.gamepathai.pdfleitor",
+  "appName": "PDF Leitor",
+  "webDir": "app",
+  "android": {
+    "backgroundColor": "#1f1f23"
+  }
+}

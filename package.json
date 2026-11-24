@@ -10,8 +10,13 @@
   },
   "type": "commonjs",
   "devDependencies": {
+    "@capacitor/cli": "^8.6.2",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^4.10.38"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  }
 }

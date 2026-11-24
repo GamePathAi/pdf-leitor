@@ -685,8 +685,31 @@ new ResizeObserver(() => {
 // ---------- salvar ----------
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
+// Dentro do app Android (Capacitor) existe uma ponte nativa para abrir e salvar arquivos.
+const Cap = window.Capacitor;
+const isNative = !!Cap?.isNativePlatform?.();
+const nativeBridge = isNative ? Cap.registerPlugin('PdfBridge') : null;
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(',')[1]);
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+
 async function deliver(bytes, name) {
   const blob = new Blob([bytes], { type: 'application/pdf' });
+  if (nativeBridge) {
+    try {
+      await nativeBridge.saveFile({ name, data: await blobToBase64(blob) });
+    } catch (e) {
+      if (e?.code === 'CANCELED') throw new DOMException('cancelado', 'AbortError');
+      throw e;
+    }
+    return;
+  }
   if (window.showSaveFilePicker) {
     const handle = await window.showSaveFilePicker({
       suggestedName: name, types: [{ description: 'PDF', accept: { 'application/pdf': ['.pdf'] } }],
@@ -857,7 +880,22 @@ if ('launchQueue' in window) {
   });
 }
 
-if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+if (nativeBridge) {
+  nativeBridge.addListener('fileOpened', async ({ path, name, error }) => {
+    if (error || !path) { toast('Não consegui abrir esse arquivo.'); return; }
+    try {
+      const res = await fetch(Cap.convertFileSrc(`file://${path}`));
+      const blob = await res.blob();
+      openFile(new File([blob], name || 'documento.pdf', { type: 'application/pdf' }));
+    } catch (e) {
+      console.error(e);
+      toast('Não consegui abrir esse arquivo.');
+    }
+  });
+}
+
+// No app Android os arquivos já vêm dentro do APK; o service worker só é usado na versão web.
+if (!isNative && 'serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW:', e));
 }
 
