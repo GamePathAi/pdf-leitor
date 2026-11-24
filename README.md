@@ -3,6 +3,8 @@
 Leitor e editor de PDF **sem propaganda**, para celular e computador.
 É um app web instalável (PWA): funciona offline e os arquivos nunca saem do aparelho.
 
+**Usar / instalar:** https://gamepathai.github.io/pdf-leitor/
+
 ## O que faz
 
 - **Ler:** rolagem contínua, zoom (botões, Ctrl + roda do mouse, pinça com dois dedos), ir para uma página,
