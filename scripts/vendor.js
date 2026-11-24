@@ -13,6 +13,8 @@ const files = [
   [nm('pdfjs-dist', 'legacy', 'build', 'pdf.min.mjs'), 'pdf.min.mjs'],
   [nm('pdfjs-dist', 'legacy', 'build', 'pdf.worker.min.mjs'), 'pdf.worker.min.mjs'],
   [nm('pdf-lib', 'dist', 'pdf-lib.min.js'), 'pdf-lib.min.js'],
+  // Necessário no app Android: cria Capacitor.registerPlugin (a ponte nativa sozinha não tem).
+  [nm('@capacitor', 'core', 'dist', 'capacitor.js'), 'capacitor.js'],
 ];
 for (const [src, dest] of files) fs.copyFileSync(src, path.join(out, dest));
 fs.cpSync(nm('pdfjs-dist', 'cmaps'), path.join(out, 'cmaps'), { recursive: true });

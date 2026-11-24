@@ -1,9 +1,9 @@
 // Service worker: deixa o app funcionar offline e recebe PDFs pelo "Compartilhar" do Android.
-const CACHE = 'pdf-leitor-v1';
+const CACHE = 'pdf-leitor-v2';
 const SHELL = [
   './', 'index.html', 'style.css', 'app.js', 'export.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png',
-  'vendor/pdf.min.mjs', 'vendor/pdf.worker.min.mjs', 'vendor/pdf-lib.min.js',
+  'vendor/pdf.min.mjs', 'vendor/pdf.worker.min.mjs', 'vendor/pdf-lib.min.js', 'vendor/capacitor.js',
 ];
 
 self.addEventListener('install', (e) => {
