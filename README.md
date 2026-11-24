@@ -27,11 +27,25 @@ npm start
 
 Abra http://localhost:8080. No Chrome ou Edge, o ícone de instalar na barra de endereço instala o app.
 
-## Colocar no celular
+## Android (app de verdade, abre PDFs por "Abrir com")
 
-Para instalar no celular, o app precisa estar num endereço **https**. A pasta `app/` é um site estático:
-publique-a em qualquer hospedagem gratuita (GitHub Pages, Netlify, Cloudflare Pages). Depois abra o
-endereço no celular e escolha **"Adicionar à tela inicial"** ou **"Instalar app"**.
+Baixe no celular: https://github.com/GamePathAi/pdf-leitor/releases/latest/download/PDF-Leitor.apk
+
+Toque no arquivo baixado e permita "instalar apps desta fonte". Depois, ao tocar num PDF, escolha
+**PDF Leitor** e **Sempre**. Novas versões são geradas automaticamente pelo GitHub (`.github/workflows/android.yml`)
+a cada mudança em `app/` ou `android/`. Basta baixar e instalar por cima.
+
+O app Android é o mesmo app web empacotado com o Capacitor. A parte nativa fica em
+`android/app/src/main/java/com/gamepathai/pdfleitor/PdfBridgePlugin.java` (receber e salvar arquivos).
+
+**Chave de assinatura:** fica em `%LOCALAPPDATA%\PDF Leitor\assinatura-android\` (com a senha no LEIA-ME)
+e nos segredos do repositório. Faça backup dessa pasta: sem ela, as próximas versões não instalam por cima.
+
+## Web / iPhone
+
+A pasta `app/` também é publicada no GitHub Pages (https://gamepathai.github.io/pdf-leitor/).
+No iPhone, abra no Safari e escolha **"Adicionar à Tela de Início"**. No PC, use o atalho criado por
+`desktop/criar-atalho.ps1`.
 
 ## Estrutura
 
