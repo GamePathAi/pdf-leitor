@@ -1,0 +1,17 @@
+{
+  "name": "pdf-leitor",
+  "version": "1.0.0",
+  "description": "Leitor e editor de PDF sem propaganda (PWA)",
+  "scripts": {
+    "vendor": "node scripts/vendor.js",
+    "icons": "node scripts/icons.js",
+    "start": "node server.js",
+    "test": "node scripts/smoke-test.js"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^4.10.38"
+  },
+  "private": true
+}

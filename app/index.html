@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#d93025">
+  <meta name="description" content="Leitor e editor de PDF sem propaganda">
+  <title>PDF Leitor</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="vendor/pdf-lib.min.js" defer></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <button id="btn-pages" class="icon-btn" title="Páginas" aria-label="Páginas" disabled>☰</button>
+    <button id="btn-open" class="icon-btn" title="Abrir PDF (Ctrl+O)" aria-label="Abrir PDF">📂</button>
+    <div id="doc-title" class="doc-title">PDF Leitor</div>
+    <div class="zoom" id="zoom-group" hidden>
+      <button id="btn-zoom-out" class="icon-btn" title="Diminuir" aria-label="Diminuir">−</button>
+      <button id="btn-zoom-fit" class="zoom-label" title="Ajustar à largura">100%</button>
+      <button id="btn-zoom-in" class="icon-btn" title="Aumentar" aria-label="Aumentar">+</button>
+    </div>
+    <button id="btn-night" class="icon-btn" title="Modo noturno" aria-label="Modo noturno">🌙</button>
+    <button id="btn-save" class="save-btn" title="Salvar (Ctrl+S)" disabled>Salvar</button>
+  </header>
+
+  <main id="viewer" class="viewer">
+    <div id="empty" class="empty">
+      <div class="empty-card">
+        <img src="icons/icon-192.png" alt="" width="72" height="72">
+        <h1>PDF Leitor</h1>
+        <p>Sem propaganda. Seus arquivos não saem do aparelho.</p>
+        <button id="btn-open-big" class="primary">Abrir PDF</button>
+        <p class="hint desktop-only">ou arraste um arquivo para cá</p>
+      </div>
+    </div>
+    <div id="pages" class="pages"></div>
+  </main>
+
+  <div id="page-indicator" class="page-indicator" hidden>
+    <input id="page-input" type="number" min="1" inputmode="numeric" aria-label="Página"> / <span id="page-count">0</span>
+  </div>
+
+  <nav id="toolbar" class="toolbar" hidden>
+    <button data-tool="pan" class="tool active" title="Ler / rolar"><span>✋</span><small>Ler</small></button>
+    <button data-tool="highlight" class="tool" title="Grifar"><span>🖍️</span><small>Grifar</small></button>
+    <button data-tool="pen" class="tool" title="Caneta"><span>✏️</span><small>Caneta</small></button>
+    <button data-tool="text" class="tool" title="Texto"><span class="t-icon">T</span><small>Texto</small></button>
+    <button data-tool="whiteout" class="tool" title="Cobrir com branco"><span>⬜</span><small>Cobrir</small></button>
+    <button data-tool="eraser" class="tool" title="Apagar anotação"><span>🧽</span><small>Apagar</small></button>
+    <button id="btn-color" class="tool" title="Cor e espessura"><span id="color-dot" class="color-dot"></span><small>Cor</small></button>
+    <button id="btn-undo" class="tool" title="Desfazer (Ctrl+Z)" disabled><span>↶</span><small>Desfazer</small></button>
+  </nav>
+
+  <div id="color-pop" class="popover" hidden>
+    <div id="color-list" class="swatches"></div>
+    <div id="width-row" class="widths">
+      <button data-width="1.5">fina</button>
+      <button data-width="3">média</button>
+      <button data-width="6">grossa</button>
+    </div>
+  </div>
+
+  <aside id="drawer" class="drawer" hidden>
+    <div class="drawer-head">
+      <strong>Páginas</strong>
+      <button id="btn-merge" class="small-btn" title="Adicionar outro PDF ao final">+ Juntar PDF</button>
+      <button id="btn-drawer-close" class="icon-btn" aria-label="Fechar">✕</button>
+    </div>
+    <div id="thumbs" class="thumbs"></div>
+  </aside>
+  <div id="drawer-backdrop" class="backdrop" hidden></div>
+
+  <dialog id="text-dialog" class="text-dialog">
+    <form method="dialog">
+      <textarea id="text-input" rows="4" placeholder="Digite o texto"></textarea>
+      <div class="row">
+        <label>Tamanho
+          <select id="text-size">
+            <option value="10">10</option><option value="12" selected>12</option>
+            <option value="14">14</option><option value="18">18</option>
+            <option value="24">24</option><option value="36">36</option>
+          </select>
+        </label>
+        <span class="spacer"></span>
+        <button value="cancel" formnovalidate>Cancelar</button>
+        <button value="ok" class="primary">OK</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+  <div id="drop-overlay" class="drop-overlay" hidden>Solte o PDF aqui</div>
+  <input id="file-input" type="file" accept="application/pdf,.pdf" hidden>
+  <input id="merge-input" type="file" accept="application/pdf,.pdf" multiple hidden>
+</body>
+</html>
