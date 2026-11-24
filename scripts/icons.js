@@ -73,4 +73,23 @@ fs.mkdirSync(out, { recursive: true });
 for (const s of [192, 512]) fs.writeFileSync(path.join(out, `icon-${s}.png`), png(s, false));
 fs.writeFileSync(path.join(out, 'maskable-512.png'), png(512, true));
 fs.writeFileSync(path.join(out, 'apple-touch-icon.png'), png(180, true));
+
+// Ícone do Windows (.ico com PNGs dentro) para o atalho da Área de Trabalho.
+const sizes = [16, 32, 48, 256];
+const imgs = sizes.map((s) => png(s, false));
+const head = Buffer.alloc(6 + 16 * sizes.length);
+head.writeUInt16LE(1, 2);
+head.writeUInt16LE(sizes.length, 4);
+let offset = head.length;
+sizes.forEach((s, i) => {
+  const o = 6 + 16 * i;
+  head[o] = s === 256 ? 0 : s;
+  head[o + 1] = s === 256 ? 0 : s;
+  head.writeUInt16LE(1, o + 4);
+  head.writeUInt16LE(32, o + 6);
+  head.writeUInt32LE(imgs[i].length, o + 8);
+  head.writeUInt32LE(offset, o + 12);
+  offset += imgs[i].length;
+});
+fs.writeFileSync(path.join(__dirname, '..', 'desktop', 'pdf-leitor.ico'), Buffer.concat([head, ...imgs]));
 console.log('ícones gerados em', out);
